@@ -4,11 +4,20 @@ import 'package:flutter_tasks_app/cubit/task_cubit.dart';
 import 'package:flutter_tasks_app/cubit/task_state.dart';
 import 'package:flutter_tasks_app/presentation/components/task_item.dart';
 
-class HomeTab extends StatelessWidget {
+class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
   @override
+  _HomeTabState createState() => _HomeTabState();
+}
+
+class _HomeTabState extends State<HomeTab> {
+  String selectedFilter = "All"; // Track the selected filter button
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context); // Access the current theme
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -22,10 +31,10 @@ class HomeTab extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _filterButton(context, "All"),
-                _filterButton(context, "InProgress"),
-                _filterButton(context, "Completed"),
-                _filterButton(context, "Overdue"),
+                _filterButton(context, "All", theme),
+                _filterButton(context, "In Progress", theme),
+                _filterButton(context, "Completed", theme),
+                _filterButton(context, "Overdue", theme),
               ],
             ),
           ),
@@ -59,20 +68,47 @@ class HomeTab extends StatelessWidget {
         onPressed: () {
           Navigator.pushNamed(context, 'addTask');
         },
-        child: const Icon(Icons.add),
+        backgroundColor: theme.brightness == Brightness.light
+            ? Colors.grey.shade600 // Softer color for light mode
+            : theme.colorScheme.secondary, // Keep dark mode consistent
+        child: Icon(Icons.add,
+            color: theme.colorScheme.onSecondary // Selected button text color
+            ),
       ),
     );
   }
 
-  // Helper function to create filter buttons
-  Widget _filterButton(BuildContext context, String label) {
+  // Helper function to create filter buttons with theme-based colors and selection logic
+  Widget _filterButton(BuildContext context, String label, ThemeData theme) {
+    final bool isSelected = label == selectedFilter;
+
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        backgroundColor: isSelected
+            ? theme.colorScheme.secondary // Selected button background
+            : theme.colorScheme.tertiary, // Unselected button background
+        foregroundColor: isSelected
+            ? theme.colorScheme.onSecondary // Selected button text color
+            : theme.colorScheme.inversePrimary, // Unselected button text color
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0), // Rounded button shape
+        ),
+      ),
       onPressed: () {
-        context
-            .read<TaskCubit>()
-            .filterTasks(status: label == "All" ? null : label);
+        setState(() {
+          selectedFilter = label; // Update the selected filter
+        });
+        context.read<TaskCubit>().filterTasks(
+            status: label == "All"
+                ? null
+                : label); // Filter tasks based on the label
       },
-      child: Text(label),
+      child: Text(
+        label,
+        style: const TextStyle(
+            fontWeight: FontWeight.bold), // Bold text for buttons
+      ),
     );
   }
 }

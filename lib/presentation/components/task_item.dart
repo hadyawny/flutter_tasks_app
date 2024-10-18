@@ -16,13 +16,17 @@ class TaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Access current theme colors
+    final theme = Theme.of(context);
+    final cardColor = theme.colorScheme.surface; // Surface color from the theme
+    final textColor =
+        theme.colorScheme.onSurface; // Text color based on surface
+    final chipColor = theme.colorScheme.secondary; // Secondary color for chips
+
     // Formatting the deadline
     final DateFormat formatter = DateFormat('dd/MM/yyyy      hh:mm a');
     String formattedDeadline = 'No Deadline'; // Default value if no deadline
-    if (task.deadline != null) {
-      // Ensure deadline is not null
-      formattedDeadline = formatter.format(task.deadline); // Format DateTime
-    }
+    formattedDeadline = formatter.format(task.deadline); // Format DateTime
 
     return Card(
       elevation: 4, // Adds shadow for depth
@@ -30,9 +34,7 @@ class TaskItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15), // Rounded corners
       ),
-      color: task.status == "Overdue"
-          ? Colors.red.shade50
-          : Colors.white, // Change color if overdue
+      color: cardColor, // Apply card background color from theme
       child: Padding(
         padding: const EdgeInsets.all(10.0), // Adds padding inside the card
         child: Column(
@@ -57,6 +59,10 @@ class TaskItem extends StatelessWidget {
                       context
                           .read<TaskCubit>()
                           .updateTaskStatus(index, "Completed");
+                    } else if (task.status == "In Progress") {
+                      context
+                          .read<TaskCubit>()
+                          .updateTaskStatus(index, "Completed");
                     }
                   },
                   icon: Icon(
@@ -70,16 +76,17 @@ class TaskItem extends StatelessWidget {
                 Expanded(
                   child: Text(
                     task.title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
+                      color: textColor, // Set text color based on theme
                     ),
                   ),
                 ),
                 Chip(
                   label: Text(
-                    '${task.priority}',
-                    style: TextStyle(
+                    task.priority,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -97,8 +104,9 @@ class TaskItem extends StatelessWidget {
                 children: [
                   Text(
                     formattedDeadline, // Display the formatted deadline
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
+                      color: textColor, // Set text color based on theme
                     ),
                   ),
                   Align(
