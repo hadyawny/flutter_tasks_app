@@ -19,8 +19,10 @@ class TaskItem extends StatelessWidget {
     // Formatting the deadline
     final DateFormat formatter = DateFormat('dd/MM/yyyy      hh:mm a');
     String formattedDeadline = 'No Deadline'; // Default value if no deadline
-    // Assuming task.deadline is a DateTime
-    formattedDeadline = formatter.format(task.deadline); // Format DateTime
+    if (task.deadline != null) {
+      // Ensure deadline is not null
+      formattedDeadline = formatter.format(task.deadline); // Format DateTime
+    }
 
     return Card(
       elevation: 4, // Adds shadow for depth
@@ -28,8 +30,11 @@ class TaskItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15), // Rounded corners
       ),
+      color: task.status == "Overdue"
+          ? Colors.red.shade50
+          : Colors.white, // Change color if overdue
       child: Padding(
-        padding: const EdgeInsets.all(16.0), // Adds padding inside the card
+        padding: const EdgeInsets.all(10.0), // Adds padding inside the card
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -39,21 +44,27 @@ class TaskItem extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    // Toggle task status between "toDo" and "completed"
-                    if (task.status == "toDo") {
+                    // Toggle task status between "To Do", "Completed", and "Overdue"
+                    if (task.status == "To Do") {
                       context
                           .read<TaskCubit>()
-                          .updateTaskStatus(index, "completed");
-                    } else if (task.status == "completed") {
-                      context.read<TaskCubit>().updateTaskStatus(index, "toDo");
+                          .updateTaskStatus(index, "Completed");
+                    } else if (task.status == "Completed") {
+                      context
+                          .read<TaskCubit>()
+                          .updateTaskStatus(index, "To Do");
+                    } else if (task.status == "Overdue") {
+                      context
+                          .read<TaskCubit>()
+                          .updateTaskStatus(index, "Completed");
                     }
                   },
                   icon: Icon(
-                    task.status == "toDo"
-                        ? Icons
-                            .check_box_outline_blank // Empty checkbox for "toDo"
-                        : Icons.check_box, // Filled checkbox for "completed"
-                    color: task.status == "toDo" ? Colors.grey : Colors.green,
+                    task.status == "Completed"
+                        ? Icons.check_box
+                        : Icons.check_box_outline_blank,
+                    color:
+                        task.status == "Completed" ? Colors.green : Colors.grey,
                   ),
                 ),
                 Expanded(
@@ -77,40 +88,51 @@ class TaskItem extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 8), // Space between title and details
+            const SizedBox(height: 5), // Space between title and details
 
-            // Task Details Row (Priority, Status, Deadline)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Priority
-
-                // Status
-                Text(
-                  formattedDeadline, // Display the formatted deadline
-                  style: const TextStyle(
-                    fontSize: 16,
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    formattedDeadline, // Display the formatted deadline
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      // Call the cubit to delete the task
-                      context.read<TaskCubit>().deleteTask(index);
-                    },
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        // Call the cubit to delete the task
+                        context.read<TaskCubit>().deleteTask(index);
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+            // Display overdue text if the task is overdue
+            if (task.status == "Overdue")
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  'Overdue!',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 
-  //function to get color based on priority
+  // Function to get color based on priority
   Color _getPriorityColor(String priority) {
     switch (priority) {
       case 'High':

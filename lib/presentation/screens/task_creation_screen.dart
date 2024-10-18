@@ -15,7 +15,7 @@ class _TaskCreationPageState extends State<TaskCreationPage> {
   // Task details
   String title = '';
   String description = '';
-  String status = 'toDo'; // Default status
+  String status = 'To Do'; // Default status
   String priority = 'Normal'; // Default priority
   DateTime deadline = DateTime.now(); // Default deadline
 
@@ -122,7 +122,7 @@ class _TaskCreationPageState extends State<TaskCreationPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                items: ['toDo', 'inProgress', 'completed']
+                items: ['To Do', 'In Progress', 'Completed']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
