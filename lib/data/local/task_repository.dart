@@ -10,6 +10,10 @@ class TaskRepository {
     return hiveService.getTasksBox().values.toList();
   }
 
+    Task getTaskAtIndex(int index) {
+    return hiveService.getTasksBox().getAt(index)!; 
+  }
+
   void addTask(Task task) {
     hiveService.getTasksBox().add(task);
   }
