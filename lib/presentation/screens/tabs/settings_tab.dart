@@ -9,14 +9,12 @@ class SettingsTab extends StatelessWidget {
       appBar: AppBar(
         title: Text('Preferences'),
       ),
-      body: Center(
-        child: SwitchListTile(
-          title: Text('Dark Mode'),
-          value: context.watch<ThemeCubit>().isDarkMode,
-          onChanged: (value) {
-            context.read<ThemeCubit>().toggleTheme();
-          },
-        ),
+      body: SwitchListTile(
+        title: Text('Dark Mode'),
+        value: context.watch<ThemeCubit>().isDarkMode,
+        onChanged: (value) {
+          context.read<ThemeCubit>().toggleTheme();
+        },
       ),
     );
   }
