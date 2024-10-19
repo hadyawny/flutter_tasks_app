@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tasks_app/data/local/task_repository.dart';
 import '../data/models/task_model.dart';
@@ -160,4 +161,38 @@ class TaskCubit extends Cubit<TaskState> {
       emit(TaskError('Failed to sort tasks'));
     }
   }
+
+
+  void triggerNotification(task, index) {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: index, // Ensure unique ID for each notification
+        channelKey: 'channelKey',
+        title: 'Task Reminder',
+        body: 'Your task "${task.title}" is due in an hour!',
+      ),
+    );
+  }
+
+// void checkTasksForNotification() {
+//   List<Task> tasks = taskRepository.getAllTasks();
+//   DateTime now = DateTime.now();
+
+//   for (var task in tasks) {
+//     if (task.notificationSent == false) {
+//       Duration timeUntilDeadline = task.deadline.difference(now);
+
+//       // Check if the task is due in 1 hour
+//       if (timeUntilDeadline.inMinutes <= 60 && timeUntilDeadline.inMinutes > 0) {
+//         // Trigger notification
+//         triggerNotification(task, tasks.indexOf(task));
+
+//         // Mark the task's notification as sent
+//         task.notificationSent = true;
+//         taskRepository.updateTask(tasks.indexOf(task), task); // Save changes
+//       }
+//     }
+//   }
+// }
+
 }
