@@ -5,6 +5,7 @@ import 'task_state.dart';
 
 class TaskCubit extends Cubit<TaskState> {
   final TaskRepository taskRepository;
+  String? currentFilterStatus; // Store the current filter status
 
   TaskCubit(this.taskRepository) : super(TaskInitial());
 
@@ -30,52 +31,68 @@ class TaskCubit extends Cubit<TaskState> {
     }
   }
 
+  // Load tasks based on the current filter (if any)
+  void loadSameTasks() {
+    try {
+      emit(TaskLoading());
+      List<Task> tasks = taskRepository.getAllTasks();
+
+      // Automatically mark overdue tasks
+      for (var task in tasks) {
+        if (task.deadline.isBefore(DateTime.now()) &&
+            task.status != "Completed") {
+          task.status = "Overdue";
+          taskRepository.updateTask(tasks.indexOf(task), task);
+        }
+      }
+
+      // Apply the current filter if it exists
+      if (currentFilterStatus != null) {
+        tasks = tasks.where((task) => task.status == currentFilterStatus).toList();
+      }
+
+      emit(TaskLoaded(tasks));
+    } catch (e) {
+      emit(TaskError('Failed to load tasks'));
+    }
+  }
+
   // Add a new task
   void addTask(Task task) {
     taskRepository.addTask(task);
-    loadTasks();
+    loadSameTasks(); // Reload filtered tasks after adding
   }
 
   // Update a task at a specific index
   void updateTask(int index, Task task) {
     taskRepository.updateTask(index, task);
-    loadTasks();
+    loadSameTasks(); // Reload filtered tasks after updating
   }
 
   // Delete a task by index
   void deleteTask(int index) {
     taskRepository.deleteTask(index);
-    // Reload tasks to reflect the deletion
-    loadTasks();
+    loadSameTasks(); // Reload filtered tasks after deletion
   }
 
+  // Filter tasks by status
   void filterTasks({String? status}) {
-    loadTasks();
-    final currentState = state;
-    if (currentState is TaskLoaded) {
-      List<Task> filteredTasks = currentState.tasks;
-
-      if (status != null) {
-        // Filter based on the status
-        filteredTasks =
-            filteredTasks.where((task) => task.status == status).toList();
-      }
-
-      emit(TaskLoaded(filteredTasks));
-    }
+    currentFilterStatus = status; // Store the current filter
+    loadSameTasks(); // Reload filtered tasks
   }
 
+  // Update task status
   void updateTaskStatus(int taskIndex, String newStatus) {
     final task = taskRepository.getTaskAtIndex(taskIndex);
     final updatedTask = Task(
       title: task.title,
       description: task.description,
-      status: newStatus, // Update the status field
+      status: newStatus,
       deadline: task.deadline,
       priority: task.priority,
     );
 
     taskRepository.updateTask(taskIndex, updatedTask);
-    loadTasks(); // Refresh the task list
+    loadSameTasks(); // Reload filtered tasks after updating status
   }
 }
