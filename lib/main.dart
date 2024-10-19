@@ -12,7 +12,6 @@ import 'data/local/hive/hive_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ThemeManager.init();
-
   final isDarkMode = await ThemeManager.getTheme(); // Load theme preference
   final hiveService = HiveService();
   await hiveService.initHive();
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
   final bool isDarkMode;
   final HiveService hiveService;
 
-  MyApp({required this.isDarkMode, required this.hiveService});
+  const MyApp({super.key, required this.isDarkMode, required this.hiveService});
 
   @override
   Widget build(BuildContext context) {
