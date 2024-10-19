@@ -6,6 +6,7 @@ import 'task_state.dart';
 class TaskCubit extends Cubit<TaskState> {
   final TaskRepository taskRepository;
   String? currentFilterStatus; // Store the current filter status
+  String? currentSortStatus; // Store the current filter status
 
   TaskCubit(this.taskRepository) : super(TaskInitial());
 
@@ -24,7 +25,7 @@ class TaskCubit extends Cubit<TaskState> {
               tasks.indexOf(task), task); // Save changes to the repository
         }
       }
-      
+
       // Automatically mark To Do tasks
       for (var task in tasks) {
         if (task.status == "Overdue" && task.deadline.isAfter(DateTime.now())) {
@@ -40,7 +41,7 @@ class TaskCubit extends Cubit<TaskState> {
     }
   }
 
-  // Load tasks based on the current filter (if any)
+  // Load tasks based on the current filter or Sort (if any)
   void loadSameTasks() {
     try {
       emit(TaskLoading());
@@ -69,6 +70,18 @@ class TaskCubit extends Cubit<TaskState> {
       if (currentFilterStatus != null) {
         tasks =
             tasks.where((task) => task.status == currentFilterStatus).toList();
+      }
+
+      if (currentSortStatus != null) {
+        if (currentSortStatus == "Priority Asc") {
+          tasks.sort((a, b) => a.priority.compareTo(b.priority));
+        } else if (currentSortStatus == "Priority Desc") {
+          tasks.sort((a, b) => b.priority.compareTo(a.priority));
+        } else if (currentSortStatus == "Deadline Asc") {
+          tasks.sort((a, b) => a.deadline.compareTo(b.deadline));
+        } else if (currentSortStatus == "Deadline Desc") {
+          tasks.sort((a, b) => b.deadline.compareTo(a.deadline));
+        }
       }
 
       emit(TaskLoaded(tasks));
@@ -118,5 +131,33 @@ class TaskCubit extends Cubit<TaskState> {
 
     taskRepository.updateTask(taskIndex, updatedTask);
     loadSameTasks(); // Reload filtered tasks after updating status
+  }
+
+  // Load and sort tasks based on criteria
+  void sortTasks(String sortBy) {
+    try {
+      emit(TaskLoading());
+      List<Task> tasks = taskRepository.getAllTasks();
+      currentSortStatus = sortBy;
+      if (currentFilterStatus != null) {
+        tasks =
+            tasks.where((task) => task.status == currentFilterStatus).toList();
+      }
+
+      // Apply sorting based on the selected option
+      if (sortBy == "Priority Asc") {
+        tasks.sort((a, b) => a.priority.compareTo(b.priority));
+      } else if (sortBy == "Priority Desc") {
+        tasks.sort((a, b) => b.priority.compareTo(a.priority));
+      } else if (sortBy == "Deadline Asc") {
+        tasks.sort((a, b) => a.deadline.compareTo(b.deadline));
+      } else if (sortBy == "Deadline Desc") {
+        tasks.sort((a, b) => b.deadline.compareTo(a.deadline));
+      }
+
+      emit(TaskLoaded(tasks));
+    } catch (e) {
+      emit(TaskError('Failed to sort tasks'));
+    }
   }
 }

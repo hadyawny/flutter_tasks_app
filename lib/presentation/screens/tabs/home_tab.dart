@@ -14,6 +14,7 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   String selectedFilter = "All"; // Track the selected filter button
+  String selectedSort = "None"; // Track the selected sorting option
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,49 @@ class _HomeTabState extends State<HomeTab> {
               ],
             ),
           ),
+
+          // Sorting Button
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                DropdownButton<String>(
+                  value: selectedSort,
+                  items: [
+                    DropdownMenuItem(
+                      value: "None",
+                      child: Text("Sort by"),
+                    ),
+                    DropdownMenuItem(
+                      value: "Priority Asc",
+                      child: Text("Priority (Low to High)"),
+                    ),
+                    DropdownMenuItem(
+                      value: "Priority Desc",
+                      child: Text("Priority (High to Low)"),
+                    ),
+                    DropdownMenuItem(
+                      value: "Deadline Asc",
+                      child: Text("Deadline (Earliest to Latest)"),
+                    ),
+                    DropdownMenuItem(
+                      value: "Deadline Desc",
+                      child: Text("Deadline (Latest to Earliest)"),
+                    ),
+                  ],
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedSort = newValue!;
+                    });
+                    context.read<TaskCubit>().sortTasks(newValue!);
+                  },
+                ),
+              ],
+            ),
+          ),
+
           Expanded(
             child: BlocBuilder<TaskCubit, TaskState>(
               builder: (context, state) {

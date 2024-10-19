@@ -28,11 +28,11 @@ class _ViewTaskScreenState extends State<ViewTaskScreen> {
   void initState() {
     super.initState();
     // Initialize task details with the current task's data
-    title = widget.task.title ?? '';
-    description = widget.task.description ?? '';
-    status = widget.task.status ?? 'To Do'; // Default to 'To Do' if null
-    priority = widget.task.priority ?? 'Normal'; // Default priority
-    deadline = widget.task.deadline ?? DateTime.now();
+    title = widget.task.title;
+    description = widget.task.description;
+    status = widget.task.status; 
+    priority = widget.task.priority; 
+    deadline = widget.task.deadline;
   }
 
   // Helper function to show date picker

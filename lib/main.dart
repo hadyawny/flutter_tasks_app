@@ -4,7 +4,6 @@ import 'package:flutter_tasks_app/presentation/screens/home_screen.dart';
 import 'package:flutter_tasks_app/cubit/theme_cubit.dart';
 import 'package:flutter_tasks_app/data/local/task_repository.dart';
 import 'package:flutter_tasks_app/presentation/screens/add_task_screen.dart';
-import 'package:flutter_tasks_app/presentation/screens/view_task_screen.dart';
 import 'package:flutter_tasks_app/presentation/theme/app_theme.dart';
 import 'package:flutter_tasks_app/utils/theme_manager.dart';
 import 'cubit/task_cubit.dart';
