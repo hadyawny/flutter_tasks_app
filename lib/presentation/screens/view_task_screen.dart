@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart'; // For formatting date and time
+import 'package:intl/intl.dart';
 import 'package:flutter_tasks_app/cubit/task_cubit.dart';
 import 'package:flutter_tasks_app/data/models/task_model.dart';
 
-class TaskCreationPage extends StatefulWidget {
-  const TaskCreationPage({super.key});
+class ViewTaskScreen extends StatefulWidget {
+  final Task task;
+  final int index;
+
+  const ViewTaskScreen({super.key, required this.task, required this.index});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _TaskCreationPageState createState() => _TaskCreationPageState();
+  _ViewTaskScreenState createState() => _ViewTaskScreenState();
 }
 
-class _TaskCreationPageState extends State<TaskCreationPage> {
+class _ViewTaskScreenState extends State<ViewTaskScreen> {
   final formKey = GlobalKey<FormState>();
 
   // Task details
-  String title = '';
-  String description = '';
-  String status = 'To Do'; // Default status
-  String priority = 'Normal'; // Default priority
-  DateTime deadline =
-      DateTime.now().add(const Duration(days: 1)); // Default Deadline
+  late String title;
+  late String description;
+  late String status;
+  late String priority;
+  late DateTime deadline;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize task details with the current task's data
+    title = widget.task.title ?? '';
+    description = widget.task.description ?? '';
+    status = widget.task.status ?? 'To Do'; // Default to 'To Do' if null
+    priority = widget.task.priority ?? 'Normal'; // Default priority
+    deadline = widget.task.deadline ?? DateTime.now();
+  }
 
   // Helper function to show date picker
   Future<void> selectDeadline(BuildContext context) async {
@@ -81,7 +93,7 @@ class _TaskCreationPageState extends State<TaskCreationPage> {
       onTap: () => hideKeyboard(context), // Dismiss keyboard on tap outside
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Create New Task'),
+          title: const Text('View & Edit Task'),
           centerTitle: true,
         ),
         body: Padding(
@@ -92,6 +104,7 @@ class _TaskCreationPageState extends State<TaskCreationPage> {
               children: <Widget>[
                 // Task Title
                 TextFormField(
+                  initialValue: title,
                   decoration: const InputDecoration(
                     labelText: 'Title',
                   ),
@@ -109,6 +122,7 @@ class _TaskCreationPageState extends State<TaskCreationPage> {
 
                 // Task Description
                 TextFormField(
+                  initialValue: description,
                   decoration: const InputDecoration(
                     labelText: 'Description',
                   ),
@@ -126,7 +140,7 @@ class _TaskCreationPageState extends State<TaskCreationPage> {
                   decoration: const InputDecoration(
                     labelText: 'Status',
                   ),
-                  items: ['To Do', 'In Progress', 'Completed']
+                  items: ['To Do', 'In Progress', 'Completed', 'Overdue']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -196,8 +210,8 @@ class _TaskCreationPageState extends State<TaskCreationPage> {
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save();
 
-                        // Create a new Task object
-                        Task newTask = Task(
+                        // Create an updated Task object
+                        Task updatedTask = Task(
                           title: title,
                           description: description,
                           status: status,
@@ -205,15 +219,17 @@ class _TaskCreationPageState extends State<TaskCreationPage> {
                           priority: priority,
                         );
 
-                        // Use TaskCubit to add the task
-                        context.read<TaskCubit>().addTask(newTask);
+                        // Use TaskCubit to update the task
+                        context
+                            .read<TaskCubit>()
+                            .updateTask(widget.index, updatedTask);
 
                         // Navigate back to the home screen
                         Navigator.pop(context);
                       }
                     },
                     child: const Text(
-                      'Create Task',
+                      'Update Task',
                       style: TextStyle(fontSize: 18),
                     ),
                   ),

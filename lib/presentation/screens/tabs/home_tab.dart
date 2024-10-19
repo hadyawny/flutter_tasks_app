@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tasks_app/cubit/task_cubit.dart';
 import 'package:flutter_tasks_app/cubit/task_state.dart';
 import 'package:flutter_tasks_app/presentation/components/task_item.dart';
+import 'package:flutter_tasks_app/presentation/screens/view_task_screen.dart';
+
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
@@ -52,9 +54,25 @@ class _HomeTabState extends State<HomeTab> {
                       final task = state.tasks[filteredIndex];
 
                       // Find the original index in the repository
-                      final originalIndex = context.read<TaskCubit>().taskRepository.getAllTasks().indexOf(task);
-                      
-                      return TaskItem(task: task, index: originalIndex); // Pass original index
+                      final originalIndex = context
+                          .read<TaskCubit>()
+                          .taskRepository
+                          .getAllTasks()
+                          .indexOf(task);
+
+                      return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ViewTaskScreen(
+                                  task: task,
+                                  index: originalIndex,
+                                ),
+                              ),
+                            );
+                          },
+                          child: TaskItem(task: task, index: originalIndex));
                     },
                   );
                 } else if (state is TaskError) {
@@ -71,6 +89,7 @@ class _HomeTabState extends State<HomeTab> {
         onPressed: () {
           Navigator.pushNamed(context, 'addTask');
         },
+        shape: CircleBorder(),
         backgroundColor: theme.brightness == Brightness.light
             ? Colors.grey.shade600 // Softer color for light mode
             : theme.colorScheme.secondary, // Keep dark mode consistent
