@@ -24,7 +24,8 @@ class TaskCubit extends Cubit<TaskState> {
               tasks.indexOf(task), task); // Save changes to the repository
         }
       }
-
+      
+      // Automatically mark To Do tasks
       for (var task in tasks) {
         if (task.status == "Overdue" && task.deadline.isAfter(DateTime.now())) {
           task.status = "To Do"; // Update the task status to "Overdue"
@@ -55,6 +56,7 @@ class TaskCubit extends Cubit<TaskState> {
         }
       }
 
+      // Automatically mark To Do tasks
       for (var task in tasks) {
         if (task.status == "Overdue" && task.deadline.isAfter(DateTime.now())) {
           task.status = "To Do"; // Update the task status to "Overdue"
