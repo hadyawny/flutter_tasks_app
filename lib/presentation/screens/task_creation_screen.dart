@@ -20,7 +20,8 @@ class _TaskCreationPageState extends State<TaskCreationPage> {
   String description = '';
   String status = 'To Do'; // Default status
   String priority = 'Normal'; // Default priority
-  DateTime deadline = DateTime.now().add(const Duration(days: 1));// Default Deadline
+  DateTime deadline =
+      DateTime.now().add(const Duration(days: 1)); // Default Deadline
 
   // Helper function to show date picker
   Future<void> selectDeadline(BuildContext context) async {

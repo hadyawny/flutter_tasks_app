@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tasks_app/cubit/task_cubit.dart';
 import 'package:flutter_tasks_app/cubit/task_state.dart';
 import 'package:flutter_tasks_app/presentation/components/task_item.dart';
-
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
@@ -49,9 +48,13 @@ class _HomeTabState extends State<HomeTab> {
                   }
                   return ListView.builder(
                     itemCount: state.tasks.length,
-                    itemBuilder: (context, index) {
-                      final task = state.tasks[index];
-                      return TaskItem(task: task, index: index);
+                    itemBuilder: (context, filteredIndex) {
+                      final task = state.tasks[filteredIndex];
+
+                      // Find the original index in the repository
+                      final originalIndex = context.read<TaskCubit>().taskRepository.getAllTasks().indexOf(task);
+                      
+                      return TaskItem(task: task, index: originalIndex); // Pass original index
                     },
                   );
                 } else if (state is TaskError) {
@@ -65,7 +68,6 @@ class _HomeTabState extends State<HomeTab> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        
         onPressed: () {
           Navigator.pushNamed(context, 'addTask');
         },

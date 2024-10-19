@@ -32,30 +32,30 @@ class TaskCubit extends Cubit<TaskState> {
   }
 
   // Load tasks based on the current filter (if any)
-  void loadSameTasks() {
-    try {
-      emit(TaskLoading());
-      List<Task> tasks = taskRepository.getAllTasks();
+void loadSameTasks() {
+  try {
+    emit(TaskLoading());
+    List<Task> tasks = taskRepository.getAllTasks();
 
-      // Automatically mark overdue tasks
-      for (var task in tasks) {
-        if (task.deadline.isBefore(DateTime.now()) &&
-            task.status != "Completed") {
-          task.status = "Overdue";
-          taskRepository.updateTask(tasks.indexOf(task), task);
-        }
+    // Automatically mark overdue tasks
+    for (var task in tasks) {
+      if (task.deadline.isBefore(DateTime.now()) &&
+          task.status != "Completed") {
+        task.status = "Overdue"; // Update the task status to "Overdue"
+        taskRepository.updateTask(tasks.indexOf(task), task); // Save changes to the repository
       }
-
-      // Apply the current filter if it exists
-      if (currentFilterStatus != null) {
-        tasks = tasks.where((task) => task.status == currentFilterStatus).toList();
-      }
-
-      emit(TaskLoaded(tasks));
-    } catch (e) {
-      emit(TaskError('Failed to load tasks'));
     }
+
+    // Apply the current filter if it exists
+    if (currentFilterStatus != null) {
+      tasks = tasks.where((task) => task.status == currentFilterStatus).toList();
+    }
+
+    emit(TaskLoaded(tasks));
+  } catch (e) {
+    emit(TaskError('Failed to load tasks'));
   }
+}
 
   // Add a new task
   void addTask(Task task) {
@@ -82,17 +82,22 @@ class TaskCubit extends Cubit<TaskState> {
   }
 
   // Update task status
-  void updateTaskStatus(int taskIndex, String newStatus) {
-    final task = taskRepository.getTaskAtIndex(taskIndex);
-    final updatedTask = Task(
-      title: task.title,
-      description: task.description,
-      status: newStatus,
-      deadline: task.deadline,
-      priority: task.priority,
-    );
+void updateTaskStatus(int taskIndex, String newStatus) {
+  final task = taskRepository.getTaskAtIndex(taskIndex);
+  
+  // Check current status before updating
+  print("Current Status: ${task.status}");
 
-    taskRepository.updateTask(taskIndex, updatedTask);
-    loadSameTasks(); // Reload filtered tasks after updating status
-  }
+  final updatedTask = Task(
+    title: task.title,
+    description: task.description,
+    status: newStatus,
+    deadline: task.deadline,
+    priority: task.priority,
+  );
+
+  taskRepository.updateTask(taskIndex, updatedTask);
+  loadSameTasks(); // Reload filtered tasks after updating status
+}
+
 }
