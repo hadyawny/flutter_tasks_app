@@ -14,11 +14,24 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black,
+      decoration: BoxDecoration(
+        color: Colors.black, // Background color
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
+
+        // Rounded top edges
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.5),
+            blurRadius: 5.0,
+            spreadRadius: 2.0,
+            offset: Offset(0, 2), // Position of the shadow
+          ),
+        ],
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
         child: GNav(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.transparent, // Make background transparent
           color: Colors.white,
           activeColor: Colors.white,
           tabBackgroundColor: Colors.grey.shade800,

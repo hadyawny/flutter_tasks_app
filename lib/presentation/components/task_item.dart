@@ -18,10 +18,9 @@ class TaskItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // Access current theme colors
     final theme = Theme.of(context);
-    final cardColor = theme.colorScheme.surface; // Surface color from the theme
+    final cardColor = theme.colorScheme.primary; // Surface color from the theme
     final textColor =
         theme.colorScheme.onSurface; // Text color based on surface
-    final chipColor = theme.colorScheme.secondary; // Secondary color for chips
 
     // Formatting the deadline
     final DateFormat formatter = DateFormat('dd/MM/yyyy      hh:mm a');

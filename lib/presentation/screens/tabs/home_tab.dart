@@ -65,6 +65,7 @@ class _HomeTabState extends State<HomeTab> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        
         onPressed: () {
           Navigator.pushNamed(context, 'addTask');
         },
