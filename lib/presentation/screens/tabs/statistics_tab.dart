@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tasks_app/cubit/task_cubit.dart';
 import 'package:flutter_tasks_app/cubit/task_state.dart';
 import 'package:flutter_tasks_app/presentation/components/task_statistics.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StatisticsTab extends StatelessWidget {
   @override
@@ -10,7 +11,10 @@ class StatisticsTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Statistics'),
+        title: Text(
+          'Statistics',
+          style: GoogleFonts.dmSerifText(),
+        ),
       ),
       body: BlocBuilder<TaskCubit, TaskState>(
         builder: (context, state) {
@@ -19,7 +23,11 @@ class StatisticsTab extends StatelessWidget {
           } else if (state is TaskLoaded) {
             return TaskStatistics(tasks: state.tasks); // Pass the tasks here
           } else {
-            return Center(child: Text('Failed to load tasks'));
+            return Center(
+                child: Text(
+              'Failed to load tasks',
+              style: GoogleFonts.dmSerifText(),
+            ));
           }
         },
       ),

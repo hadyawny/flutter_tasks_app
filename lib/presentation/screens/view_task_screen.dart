@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_tasks_app/cubit/task_cubit.dart';
 import 'package:flutter_tasks_app/data/models/task_model.dart';
@@ -30,8 +31,8 @@ class _ViewTaskScreenState extends State<ViewTaskScreen> {
     // Initialize task details with the current task's data
     title = widget.task.title;
     description = widget.task.description;
-    status = widget.task.status; 
-    priority = widget.task.priority; 
+    status = widget.task.status;
+    priority = widget.task.priority;
     deadline = widget.task.deadline;
   }
 
@@ -93,7 +94,10 @@ class _ViewTaskScreenState extends State<ViewTaskScreen> {
       onTap: () => hideKeyboard(context), // Dismiss keyboard on tap outside
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('View & Edit Task'),
+          title: Text(
+            'View & Edit Task',
+            style: GoogleFonts.dmSerifText(),
+          ),
           centerTitle: true,
         ),
         body: Padding(
@@ -182,7 +186,7 @@ class _ViewTaskScreenState extends State<ViewTaskScreen> {
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
                   title: Text(
                     'Deadline: ${getFormattedDeadline()}',
-                    style: const TextStyle(fontSize: 16),
+                    style: GoogleFonts.dmSerifText(fontSize: 16),
                   ),
                   trailing: const Icon(Icons.calendar_today),
                   onTap: () async {
@@ -228,9 +232,9 @@ class _ViewTaskScreenState extends State<ViewTaskScreen> {
                         Navigator.pop(context);
                       }
                     },
-                    child: const Text(
+                    child: Text(
                       'Update Task',
-                      style: TextStyle(fontSize: 18),
+                      style: GoogleFonts.dmSerifText(fontSize: 18),
                     ),
                   ),
                 ),

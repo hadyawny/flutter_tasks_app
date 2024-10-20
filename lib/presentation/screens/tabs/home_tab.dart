@@ -4,6 +4,7 @@ import 'package:flutter_tasks_app/cubit/task_cubit.dart';
 import 'package:flutter_tasks_app/cubit/task_state.dart';
 import 'package:flutter_tasks_app/presentation/components/task_item.dart';
 import 'package:flutter_tasks_app/presentation/screens/view_task_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -23,7 +24,10 @@ class _HomeTabState extends State<HomeTab> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Tasks'),
+        title: Text(
+          'Tasks',
+          style: GoogleFonts.dmSerifText(),
+        ),
       ),
       body: Column(
         children: [
@@ -53,23 +57,38 @@ class _HomeTabState extends State<HomeTab> {
                   items: [
                     DropdownMenuItem(
                       value: "None",
-                      child: Text("Sort by"),
+                      child: Text(
+                        "Sort by",
+                        style: GoogleFonts.dmSerifText(),
+                      ),
                     ),
                     DropdownMenuItem(
                       value: "Priority Asc",
-                      child: Text("Priority (Low to High)"),
+                      child: Text(
+                        "Priority (Low to High)",
+                        style: GoogleFonts.dmSerifText(),
+                      ),
                     ),
                     DropdownMenuItem(
                       value: "Priority Desc",
-                      child: Text("Priority (High to Low)"),
+                      child: Text(
+                        "Priority (High to Low)",
+                        style: GoogleFonts.dmSerifText(),
+                      ),
                     ),
                     DropdownMenuItem(
                       value: "Deadline Asc",
-                      child: Text("Deadline (Earliest to Latest)"),
+                      child: Text(
+                        "Deadline (Earliest to Latest)",
+                        style: GoogleFonts.dmSerifText(),
+                      ),
                     ),
                     DropdownMenuItem(
                       value: "Deadline Desc",
-                      child: Text("Deadline (Latest to Earliest)"),
+                      child: Text(
+                        "Deadline (Latest to Earliest)",
+                        style: GoogleFonts.dmSerifText(),
+                      ),
                     ),
                   ],
                   onChanged: (String? newValue) {
@@ -90,7 +109,11 @@ class _HomeTabState extends State<HomeTab> {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is TaskLoaded) {
                   if (state.tasks.isEmpty) {
-                    return const Center(child: Text('No tasks found.'));
+                    return Center(
+                        child: Text(
+                      'No tasks found.',
+                      style: GoogleFonts.dmSerifText(),
+                    ));
                   }
                   return ListView.builder(
                     itemCount: state.tasks.length,
@@ -122,7 +145,11 @@ class _HomeTabState extends State<HomeTab> {
                 } else if (state is TaskError) {
                   return Center(child: Text(state.message));
                 } else {
-                  return const Center(child: Text('No tasks found.'));
+                  return Center(
+                      child: Text(
+                    'No tasks found.',
+                    style: GoogleFonts.dmSerifText(),
+                  ));
                 }
               },
             ),
@@ -172,7 +199,7 @@ class _HomeTabState extends State<HomeTab> {
       },
       child: Text(
         label,
-        style: const TextStyle(
+        style: GoogleFonts.dmSerifText(
             fontWeight: FontWeight.bold), // Bold text for buttons
       ),
     );

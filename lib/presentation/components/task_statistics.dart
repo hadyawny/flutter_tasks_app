@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 
 import 'package:flutter_tasks_app/data/models/task_model.dart';
 import 'package:flutter_tasks_app/presentation/components/animated_counter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TaskStatistics extends StatelessWidget {
   final List<Task> tasks; // Assume you pass the tasks here
@@ -53,7 +54,7 @@ class TaskStatistics extends StatelessWidget {
         title: 'Completed',
         radius: 30,
         titlePositionPercentageOffset: 2,
-        titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+        titleStyle: GoogleFonts.dmSerifText(fontWeight: FontWeight.bold),
       ),
       PieChartSectionData(
         color: Colors.red,
@@ -61,7 +62,7 @@ class TaskStatistics extends StatelessWidget {
         title: 'Overdue',
         radius: 30,
         titlePositionPercentageOffset: 2,
-        titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+        titleStyle: GoogleFonts.dmSerifText(fontWeight: FontWeight.bold),
       ),
       PieChartSectionData(
         color: Colors.blue,
@@ -69,7 +70,7 @@ class TaskStatistics extends StatelessWidget {
         title: 'To Do',
         radius: 30,
         titlePositionPercentageOffset: 2,
-        titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+        titleStyle: GoogleFonts.dmSerifText(fontWeight: FontWeight.bold),
       ),
       PieChartSectionData(
         color: Colors.orange,
@@ -78,7 +79,7 @@ class TaskStatistics extends StatelessWidget {
         radius: 30,
         titlePositionPercentageOffset: 2,
 
-        titleStyle: const TextStyle(fontWeight: FontWeight.bold),
+        titleStyle: GoogleFonts.dmSerifText(fontWeight: FontWeight.bold),
       ),
     ];
   }

@@ -36,6 +36,9 @@ ThemeData lightMode = ThemeData(
       color: Colors.blueGrey.shade600,
     ),
   ),
+  
+
+
 );
 
 // Dark theme

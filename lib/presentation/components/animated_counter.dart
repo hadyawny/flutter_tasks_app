@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:google_fonts/google_fonts.dart';
+
 class AnimatedCounter extends StatefulWidget {
   final int completed;
   final int overdue;
@@ -41,7 +43,7 @@ class _AnimatedCounterState extends State<AnimatedCounter> {
       }
     });
 
-    Timer.periodic(const  Duration(milliseconds: 200), (timer) {
+    Timer.periodic(const Duration(milliseconds: 200), (timer) {
       if (displayedOverdue < widget.overdue) {
         setState(() {
           displayedOverdue++;
@@ -51,7 +53,7 @@ class _AnimatedCounterState extends State<AnimatedCounter> {
       }
     });
 
-    Timer.periodic(const  Duration(milliseconds: 200), (timer) {
+    Timer.periodic(const Duration(milliseconds: 200), (timer) {
       if (displayedToDo < widget.toDo) {
         setState(() {
           displayedToDo++;
@@ -61,7 +63,7 @@ class _AnimatedCounterState extends State<AnimatedCounter> {
       }
     });
 
-    Timer.periodic(const  Duration(milliseconds: 200), (timer) {
+    Timer.periodic(const Duration(milliseconds: 200), (timer) {
       if (displayedInProgress < widget.inProgress) {
         setState(() {
           displayedInProgress++;
@@ -78,28 +80,32 @@ class _AnimatedCounterState extends State<AnimatedCounter> {
       children: [
         Text(
           'To Do Tasks: $displayedToDo',
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: GoogleFonts.dmSerifText(
+              fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           height: 10,
         ),
         Text(
           'In Progress Tasks: $displayedInProgress',
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: GoogleFonts.dmSerifText(
+              fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           height: 10,
         ),
         Text(
           'Completed Tasks: $displayedCompleted',
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: GoogleFonts.dmSerifText(
+              fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           height: 10,
         ),
         Text(
           'Overdue Tasks: $displayedOverdue',
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: GoogleFonts.dmSerifText(
+              fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ],
     );

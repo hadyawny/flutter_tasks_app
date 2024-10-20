@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart'; // For formatting date and time
 import 'package:flutter_tasks_app/cubit/task_cubit.dart';
 import 'package:flutter_tasks_app/data/models/task_model.dart';
@@ -81,7 +82,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       onTap: () => hideKeyboard(context), // Dismiss keyboard on tap outside
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Create New Task'),
+          title: Text(
+            'Create New Task',
+            style: GoogleFonts.dmSerifText(),
+          ),
           centerTitle: true,
         ),
         body: Padding(
@@ -168,7 +172,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
                   title: Text(
                     'Deadline: ${getFormattedDeadline()}',
-                    style: const TextStyle(fontSize: 16),
+                    style: GoogleFonts.dmSerifText(fontSize: 16),
                   ),
                   trailing: const Icon(Icons.calendar_today),
                   onTap: () async {
@@ -212,9 +216,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         Navigator.pop(context);
                       }
                     },
-                    child: const Text(
+                    child: Text(
                       'Create Task',
-                      style: TextStyle(fontSize: 18),
+                      style: GoogleFonts.dmSerifText(fontSize: 18),
                     ),
                   ),
                 ),
