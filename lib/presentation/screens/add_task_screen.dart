@@ -19,10 +19,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   // Task details
   String title = '';
   String description = '';
-  String status = 'To Do'; // Default status
-  String priority = 'Normal'; // Default priority
-  DateTime deadline =
-      DateTime.now().add(const Duration(days: 1)); // Default Deadline
+  String status = 'To Do';
+  String priority = 'Normal';
+  DateTime deadline = DateTime.now().add(const Duration(days: 1));
 
   // Helper function to show date picker
   Future<void> selectDeadline(BuildContext context) async {
@@ -116,8 +115,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Description',
                   ),
-                  maxLines: 5, // Increases the size of the text box
-
+                  maxLines: 3,
                   onSaved: (value) {
                     description = value!;
                   },
@@ -188,9 +186,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme
-                          .colorScheme.secondary, // Button background color
+                          .colorScheme.secondary, 
                       foregroundColor:
-                          theme.colorScheme.onSecondary, // Button text color
+                          theme.colorScheme.onSecondary, 
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

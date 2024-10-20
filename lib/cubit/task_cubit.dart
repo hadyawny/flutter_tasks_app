@@ -6,18 +6,19 @@ import 'task_state.dart';
 
 class TaskCubit extends Cubit<TaskState> {
   final TaskRepository taskRepository;
-  String? currentFilterStatus; // Store the current filter status
-  String? currentSortStatus; // Store the current sort status
+  String? currentFilterStatus;
+  String? currentSortStatus;
 
   TaskCubit(this.taskRepository) : super(TaskInitial());
 
   // Load all tasks from Hive
   void loadTasks() {
     try {
+      //emit loading state
       emit(TaskLoading());
       List<Task> tasks = taskRepository.getAllTasks();
 
-      // Automatically mark overdue tasks
+      // mark overdue tasks
       for (var task in tasks) {
         if (task.deadline.isBefore(DateTime.now()) &&
             task.status != "Completed") {
@@ -27,7 +28,7 @@ class TaskCubit extends Cubit<TaskState> {
         }
       }
 
-      // Automatically mark To Do tasks
+      //  mark To Do tasks
       for (var task in tasks) {
         if (task.status == "Overdue" && task.deadline.isAfter(DateTime.now())) {
           task.status = "To Do"; // Update the task status to "Overdue"
@@ -45,10 +46,12 @@ class TaskCubit extends Cubit<TaskState> {
   // Load tasks based on the current filter or Sort (if any)
   void loadSameTasks() {
     try {
+      //emit loading state
+
       emit(TaskLoading());
       List<Task> tasks = taskRepository.getAllTasks();
 
-      // Automatically mark overdue tasks
+      //  mark overdue tasks
       for (var task in tasks) {
         if (task.deadline.isBefore(DateTime.now()) &&
             task.status != "Completed") {
@@ -58,10 +61,10 @@ class TaskCubit extends Cubit<TaskState> {
         }
       }
 
-      // Automatically mark To Do tasks
+      //  mark To Do tasks
       for (var task in tasks) {
         if (task.status == "Overdue" && task.deadline.isAfter(DateTime.now())) {
-          task.status = "To Do"; // Update the task status to "Overdue"
+          task.status = "To Do"; // Update the task status to "To Do"
           taskRepository.updateTask(
               tasks.indexOf(task), task); // Save changes to the repository
         }
@@ -72,6 +75,8 @@ class TaskCubit extends Cubit<TaskState> {
         tasks =
             tasks.where((task) => task.status == currentFilterStatus).toList();
       }
+
+      // Apply the current sorts if it exists
 
       if (currentSortStatus != null) {
         if (currentSortStatus == "Priority Asc") {
@@ -84,7 +89,7 @@ class TaskCubit extends Cubit<TaskState> {
           tasks.sort((a, b) => b.deadline.compareTo(a.deadline));
         }
       }
-
+      // emit loaded state with tasks
       emit(TaskLoaded(tasks));
     } catch (e) {
       emit(TaskError('Failed to load tasks'));
@@ -94,17 +99,21 @@ class TaskCubit extends Cubit<TaskState> {
   // Add a new task
   void addTask(Task task) {
     taskRepository.addTask(task);
-    int taskIndex = taskRepository.getAllTasks().length -
-        1; // Assuming tasks are stored in a list
+
+    // getting task index
+    int taskIndex = taskRepository.getAllTasks().length - 1;
+
+    // scheduling notification before the deadline by 1 hour
+
     scheduleNotificationForTask(task, taskIndex);
 
-    loadSameTasks(); // Reload filtered tasks after adding
+    // Reload filtered tasks after adding
+    loadSameTasks();
   }
 
   // Update a task at a specific index
   void updateTask(int index, Task task) {
     // Cancel the previous notification for this task
-
     AwesomeNotifications().cancel(index);
 
     // Update the task in the repository
@@ -113,19 +122,23 @@ class TaskCubit extends Cubit<TaskState> {
     // Schedule a new notification with the updated task details
     scheduleNotificationForTask(task, index);
 
-    loadSameTasks(); // Reload filtered tasks after updating
+    // Reload filtered tasks after updating
+    loadSameTasks();
   }
 
   // Delete a task by index
   void deleteTask(int index) {
     taskRepository.deleteTask(index);
-    loadSameTasks(); // Reload filtered tasks after deletion
+    // Reload filtered tasks after deletion
+    loadSameTasks();
   }
 
   // Filter tasks by status
   void filterTasks({String? status}) {
-    currentFilterStatus = status; // Store the current filter
-    loadSameTasks(); // Reload filtered tasks
+    // Store the current filter
+    currentFilterStatus = status;
+    // Reload filtered tasks
+    loadSameTasks();
   }
 
   // Update task status
@@ -133,7 +146,6 @@ class TaskCubit extends Cubit<TaskState> {
     final task = taskRepository.getTaskAtIndex(taskIndex);
 
     // Check current status before updating
-    print("Current Status: ${task.status}");
 
     final updatedTask = Task(
       title: task.title,
@@ -144,35 +156,16 @@ class TaskCubit extends Cubit<TaskState> {
     );
 
     taskRepository.updateTask(taskIndex, updatedTask);
-    loadSameTasks(); // Reload filtered tasks after updating status
+    // Reload filtered tasks after updating status
+    loadSameTasks();
   }
 
   // Load and sort tasks based on criteria
   void sortTasks(String sortBy) {
-    try {
-      emit(TaskLoading());
-      List<Task> tasks = taskRepository.getAllTasks();
-      currentSortStatus = sortBy;
-      if (currentFilterStatus != null) {
-        tasks =
-            tasks.where((task) => task.status == currentFilterStatus).toList();
-      }
-
-      // Apply sorting based on the selected option
-      if (sortBy == "Priority Asc") {
-        tasks.sort((a, b) => a.priority.compareTo(b.priority));
-      } else if (sortBy == "Priority Desc") {
-        tasks.sort((a, b) => b.priority.compareTo(a.priority));
-      } else if (sortBy == "Deadline Asc") {
-        tasks.sort((a, b) => a.deadline.compareTo(b.deadline));
-      } else if (sortBy == "Deadline Desc") {
-        tasks.sort((a, b) => b.deadline.compareTo(a.deadline));
-      }
-
-      emit(TaskLoaded(tasks));
-    } catch (e) {
-      emit(TaskError('Failed to sort tasks'));
-    }
+    // Store the current filter
+    currentSortStatus = sortBy;
+    // Reload filtered tasks
+    loadSameTasks();
   }
 
 // Function to schedule notification

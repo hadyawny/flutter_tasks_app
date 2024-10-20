@@ -9,10 +9,10 @@ class TaskItem extends StatelessWidget {
   final int index;
 
   const TaskItem({
-    Key? key,
+    super.key,
     required this.task,
     required this.index,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +123,8 @@ class TaskItem extends StatelessWidget {
             ),
             // Display overdue text if the task is overdue
             if (task.status == "Overdue")
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+              const Padding(
+                padding:  EdgeInsets.only(top: 8.0),
                 child: Text(
                   'Overdue!',
                   style: TextStyle(

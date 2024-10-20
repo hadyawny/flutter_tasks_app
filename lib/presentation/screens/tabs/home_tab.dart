@@ -160,7 +160,7 @@ class _HomeTabState extends State<HomeTab> {
         onPressed: () {
           Navigator.pushNamed(context, 'addTask');
         },
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         backgroundColor: theme.brightness == Brightness.light
             ? Colors.grey.shade600 // Softer color for light mode
             : theme.colorScheme.secondary, // Keep dark mode consistent

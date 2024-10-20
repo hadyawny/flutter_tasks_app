@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tasks_app/cubit/task_cubit.dart';
 import 'package:flutter_tasks_app/presentation/components/nav_bar.dart';
 import 'package:flutter_tasks_app/presentation/screens/tabs/home_tab.dart';
 import 'package:flutter_tasks_app/presentation/screens/tabs/settings_tab.dart';
 import 'package:flutter_tasks_app/presentation/screens/tabs/statistics_tab.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -14,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // List of pages that correspond to each tab
   final List<Widget> screens = [
-    HomeTab(),
+    const HomeTab(),
     StatisticsTab(),
     SettingsTab(),
   ];
@@ -28,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   navFunction(index) {
+    BlocProvider.of<TaskCubit>(context).loadTasks();
     setState(() {
       selectedIndex = index;
     });

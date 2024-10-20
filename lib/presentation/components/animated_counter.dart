@@ -3,13 +3,15 @@ import 'dart:async';
 
 import 'package:google_fonts/google_fonts.dart';
 
+// AnimatedCounter StatefulWidget to display counts with animation
 class AnimatedCounter extends StatefulWidget {
   final int completed;
   final int overdue;
   final int toDo;
   final int inProgress;
 
-  AnimatedCounter({
+  const AnimatedCounter({
+    super.key,
     required this.completed,
     required this.overdue,
     required this.toDo,
@@ -17,6 +19,7 @@ class AnimatedCounter extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _AnimatedCounterState createState() => _AnimatedCounterState();
 }
 
@@ -32,8 +35,10 @@ class _AnimatedCounterState extends State<AnimatedCounter> {
     startAnimation();
   }
 
+  // Function to animate the counts
+
   void startAnimation() {
-    Timer.periodic(Duration(milliseconds: 200), (timer) {
+    Timer.periodic(const Duration(milliseconds: 200), (timer) {
       if (displayedCompleted < widget.completed) {
         setState(() {
           displayedCompleted++;

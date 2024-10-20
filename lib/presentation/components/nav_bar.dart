@@ -16,7 +16,7 @@ class NavBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.black, // Background color
-        borderRadius: BorderRadius.vertical(top: Radius.circular(30.0)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(30.0)),
 
         // Rounded top edges
         boxShadow: [
@@ -24,7 +24,7 @@ class NavBar extends StatelessWidget {
             color: Colors.black.withOpacity(0.5),
             blurRadius: 5.0,
             spreadRadius: 2.0,
-            offset: Offset(0, 2), // Position of the shadow
+            offset: const Offset(0, 2), // Position of the shadow
           ),
         ],
       ),

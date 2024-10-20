@@ -11,15 +11,21 @@ import 'cubit/task_cubit.dart';
 import 'data/local/hive/hive_service.dart';
 
 void main() async {
+  // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize ThemeManager for managing theme preferences
   await ThemeManager.init();
-  final isDarkMode = await ThemeManager.getTheme(); // Load theme preference
 
+  // Load theme preference
+  final isDarkMode = await ThemeManager.getTheme();
+
+  // Create an instance of HiveService and Initialize Hive
   final hiveService = HiveService();
   await hiveService.initHive();
 
-  await initializeNotifications(); // Call the new function for notification setup
+  // Set up notifications
+  await initializeNotifications();
 
   runApp(MyApp(isDarkMode: isDarkMode, hiveService: hiveService));
 }
@@ -46,10 +52,12 @@ class MyApp extends StatelessWidget {
         builder: (context, isDarkMode) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: isDarkMode ? darkMode : lightMode,
+            theme: isDarkMode
+                ? darkMode
+                : lightMode, // Set theme based on current mode
             initialRoute: '/',
             routes: {
-              '/': (context) => HomeScreen(),
+              '/': (context) => const HomeScreen(),
               'addTask': (context) => const AddTaskScreen(),
             },
           );

@@ -12,6 +12,7 @@ class ViewTaskScreen extends StatefulWidget {
   const ViewTaskScreen({super.key, required this.task, required this.index});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ViewTaskScreenState createState() => _ViewTaskScreenState();
 }
 
@@ -202,9 +203,9 @@ class _ViewTaskScreenState extends State<ViewTaskScreen> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme
-                          .colorScheme.secondary, // Button background color
+                          .colorScheme.secondary, 
                       foregroundColor:
-                          theme.colorScheme.onSecondary, // Button text color
+                          theme.colorScheme.onSecondary, 
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

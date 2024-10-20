@@ -11,7 +11,7 @@ class Task extends HiveObject {
   String description;
 
   @HiveField(2)
-  String status; // "toDo", "inProgress", "completed"
+  String status; // "To Do", "In Progress", "Completed" , "Overdue"
 
   @HiveField(3)
   DateTime deadline;

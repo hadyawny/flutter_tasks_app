@@ -4,6 +4,8 @@ import 'package:flutter_tasks_app/cubit/theme_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SettingsTab extends StatelessWidget {
+  const SettingsTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +18,7 @@ class SettingsTab extends StatelessWidget {
       body: SwitchListTile(
         title: Text(
           'Dark Mode',
-          style: GoogleFonts.dmSerifText(),
+          style: GoogleFonts.dmSerifText(fontSize: 20),
         ),
         value: context.watch<ThemeCubit>().isDarkMode,
         onChanged: (value) {
