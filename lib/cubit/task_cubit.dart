@@ -80,9 +80,9 @@ class TaskCubit extends Cubit<TaskState> {
 
       if (currentSortStatus != null) {
         if (currentSortStatus == "Priority Asc") {
-          tasks.sort((a, b) => a.priority.compareTo(b.priority));
-        } else if (currentSortStatus == "Priority Desc") {
           tasks.sort((a, b) => b.priority.compareTo(a.priority));
+        } else if (currentSortStatus == "Priority Desc") {
+          tasks.sort((a, b) => a.priority.compareTo(b.priority));
         } else if (currentSortStatus == "Deadline Asc") {
           tasks.sort((a, b) => a.deadline.compareTo(b.deadline));
         } else if (currentSortStatus == "Deadline Desc") {
