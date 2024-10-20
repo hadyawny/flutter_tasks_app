@@ -7,7 +7,7 @@ import 'task_state.dart';
 class TaskCubit extends Cubit<TaskState> {
   final TaskRepository taskRepository;
   String? currentFilterStatus; // Store the current filter status
-  String? currentSortStatus; // Store the current filter status
+  String? currentSortStatus; // Store the current sort status
 
   TaskCubit(this.taskRepository) : super(TaskInitial());
 
@@ -94,12 +94,25 @@ class TaskCubit extends Cubit<TaskState> {
   // Add a new task
   void addTask(Task task) {
     taskRepository.addTask(task);
+    int taskIndex = taskRepository.getAllTasks().length -
+        1; // Assuming tasks are stored in a list
+    scheduleNotificationForTask(task, taskIndex);
+
     loadSameTasks(); // Reload filtered tasks after adding
   }
 
   // Update a task at a specific index
   void updateTask(int index, Task task) {
+    // Cancel the previous notification for this task
+
+    AwesomeNotifications().cancel(index);
+
+    // Update the task in the repository
     taskRepository.updateTask(index, task);
+
+    // Schedule a new notification with the updated task details
+    scheduleNotificationForTask(task, index);
+
     loadSameTasks(); // Reload filtered tasks after updating
   }
 
@@ -162,37 +175,33 @@ class TaskCubit extends Cubit<TaskState> {
     }
   }
 
+// Function to schedule notification
+  void scheduleNotificationForTask(task, index) {
+    DateTime now = DateTime.now();
+    DateTime notificationTime =
+        task.deadline.subtract(const Duration(hours: 1)); // Deadline - 1 hour
 
-  void triggerNotification(task, index) {
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: index, // Ensure unique ID for each notification
-        channelKey: 'channelKey',
-        title: 'Task Reminder',
-        body: 'Your task "${task.title}" is due in an hour!',
-      ),
-    );
+    // If the task deadline is more than 1 hour away, schedule the notification
+    if (notificationTime.isAfter(now)) {
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: index, // Unique index for the notification
+          channelKey: 'channelKey',
+          title: 'Upcoming Task Reminder',
+          body: 'Your task "${task.title}" is due in an hour!',
+          notificationLayout: NotificationLayout.Default,
+        ),
+        schedule: NotificationCalendar(
+          year: notificationTime.year,
+          month: notificationTime.month,
+          day: notificationTime.day,
+          hour: notificationTime.hour,
+          minute: notificationTime.minute,
+          second: 0,
+          millisecond: 0,
+          preciseAlarm: true,
+        ),
+      );
+    }
   }
-
-// void checkTasksForNotification() {
-//   List<Task> tasks = taskRepository.getAllTasks();
-//   DateTime now = DateTime.now();
-
-//   for (var task in tasks) {
-//     if (task.notificationSent == false) {
-//       Duration timeUntilDeadline = task.deadline.difference(now);
-
-//       // Check if the task is due in 1 hour
-//       if (timeUntilDeadline.inMinutes <= 60 && timeUntilDeadline.inMinutes > 0) {
-//         // Trigger notification
-//         triggerNotification(task, tasks.indexOf(task));
-
-//         // Mark the task's notification as sent
-//         task.notificationSent = true;
-//         taskRepository.updateTask(tasks.indexOf(task), task); // Save changes
-//       }
-//     }
-//   }
-// }
-
 }
