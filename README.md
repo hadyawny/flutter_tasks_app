@@ -30,7 +30,7 @@ This app uses GitHub Actions for automated deployment. Each time changes are pus
 ## Getting Started
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/hadyawny/tasks_manager_app.git
+   git clone https://github.com/hadyawny/flutter_tasks_app.git
    cd tasks_manager_app
    ```
 
