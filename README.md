@@ -27,11 +27,10 @@ The Tasks Manager App is a beautifully designed task management application buil
 This app uses GitHub Actions for automated deployment. Each time changes are pushed to the \`main\` branch, the app is automatically built and deployed.
 
 
-
 ## Getting Started
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/yourusername/tasks_manager_app.git
+   git clone https://github.com/hadyawny/tasks_manager_app.git
    cd tasks_manager_app
    ```
 
