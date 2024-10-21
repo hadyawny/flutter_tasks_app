@@ -55,6 +55,5 @@ https://github.com/user-attachments/assets/a79eabf7-24a8-4279-a6c8-ae079064bbea
 
 ## Download APK
 
-https://drive.google.com/file/d/186usorfBWqBIc21FTkg54QRbBv6GxO2b/view?usp=sharing
-
+https://drive.google.com/file/d/1Mkjd7ImDQsS_emkr184aYGxKQUOHbWPN
 

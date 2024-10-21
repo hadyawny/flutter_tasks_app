@@ -53,7 +53,7 @@ class TaskStatistics extends StatelessWidget {
         value: completed.toDouble(),
         title: 'Completed',
         radius: 30,
-        titlePositionPercentageOffset: 2,
+        titlePositionPercentageOffset: 2.1,
         titleStyle: GoogleFonts.dmSerifText(fontWeight: FontWeight.bold),
       ),
       PieChartSectionData(
@@ -61,7 +61,7 @@ class TaskStatistics extends StatelessWidget {
         value: overdue.toDouble(),
         title: 'Overdue',
         radius: 30,
-        titlePositionPercentageOffset: 2,
+        titlePositionPercentageOffset: 2.1,
         titleStyle: GoogleFonts.dmSerifText(fontWeight: FontWeight.bold),
       ),
       PieChartSectionData(
@@ -69,7 +69,7 @@ class TaskStatistics extends StatelessWidget {
         value: toDo.toDouble(),
         title: 'To Do',
         radius: 30,
-        titlePositionPercentageOffset: 2,
+        titlePositionPercentageOffset: 2.1,
         titleStyle: GoogleFonts.dmSerifText(fontWeight: FontWeight.bold),
       ),
       PieChartSectionData(

@@ -36,6 +36,9 @@ class TaskCubit extends Cubit<TaskState> {
               tasks.indexOf(task), task); // Save changes to the repository
         }
       }
+      //reset filter and sort
+      currentFilterStatus = null;
+      currentSortStatus = null;
 
       emit(TaskLoaded(tasks));
     } catch (e) {
@@ -80,9 +83,11 @@ class TaskCubit extends Cubit<TaskState> {
 
       if (currentSortStatus != null) {
         if (currentSortStatus == "Priority Asc") {
-          tasks.sort((a, b) => b.priority.compareTo(a.priority));
+          tasks.sort((a, b) =>
+              _priorityValue(a.priority).compareTo(_priorityValue(b.priority)));
         } else if (currentSortStatus == "Priority Desc") {
-          tasks.sort((a, b) => a.priority.compareTo(b.priority));
+          tasks.sort((a, b) =>
+              _priorityValue(b.priority).compareTo(_priorityValue(a.priority)));
         } else if (currentSortStatus == "Deadline Asc") {
           tasks.sort((a, b) => a.deadline.compareTo(b.deadline));
         } else if (currentSortStatus == "Deadline Desc") {
@@ -195,6 +200,19 @@ class TaskCubit extends Cubit<TaskState> {
           preciseAlarm: true,
         ),
       );
+    }
+  }
+
+  int _priorityValue(String priority) {
+    switch (priority) {
+      case 'Low':
+        return 1;
+      case 'Normal':
+        return 2;
+      case 'High':
+        return 3;
+      default:
+        return 0; // Default case, if an unexpected priority is found
     }
   }
 }

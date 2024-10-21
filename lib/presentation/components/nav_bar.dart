@@ -29,9 +29,9 @@ class NavBar extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
         child: GNav(
-          backgroundColor: Colors.transparent, // Make background transparent
+          backgroundColor: Colors.transparent,
           color: Colors.white,
           activeColor: Colors.white,
           tabBackgroundColor: Colors.grey.shade800,

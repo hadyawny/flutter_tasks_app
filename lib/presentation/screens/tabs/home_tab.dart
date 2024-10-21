@@ -34,14 +34,19 @@ class _HomeTabState extends State<HomeTab> {
           // Filter Buttons
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _filterButton(context, "All", theme),
-                _filterButton(context, "In Progress", theme),
-                _filterButton(context, "Completed", theme),
-                _filterButton(context, "Overdue", theme),
-              ],
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal, // Allow horizontal scroll
+              child: Row(
+                children: [
+                  _filterButton(context, "All", theme),
+                  SizedBox(width: 10), // Add spacing between buttons
+                  _filterButton(context, "In Progress", theme),
+                  SizedBox(width: 10),
+                  _filterButton(context, "Completed", theme),
+                  SizedBox(width: 10),
+                  _filterButton(context, "Overdue", theme),
+                ],
+              ),
             ),
           ),
 

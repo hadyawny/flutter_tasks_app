@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 Future<void> initializeNotifications() async {
   await AwesomeNotifications().initialize(
-    null, // Default icon
+    'resource://drawable/icon',
     [
       NotificationChannel(
         channelKey: 'channelKey',
